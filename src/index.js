@@ -1,44 +1,91 @@
-const displayController = (() => {
 
-    let display = document.getElementById('content')
+const projects = [];
+const items = [];
 
-    const clearDisplay = () => {
-        while (display.firstChild) {display.removeChild(display.lastChild)}
-    }
+display = document.getElementById('content')
+template = document.getElementById('template')
 
-    const displayProject = () =>{
-        clearDisplay();
 
-    }
+const projButton = document.createElement('button')
 
-    const displayItems = (anItem) =>{
-        display.innerHTML = anItem.title
-    }
+    projButton.addEventListener('click', () => {
+        projects.push(newProject(prompt("Enter project name"), prompt("Enter project Description")))
+        displayController.refresh();
+    })
 
-    return {clearDisplay, displayItems, displayProject}
+    template.appendChild(projButton);
 
-})();
 
-const newProject = (title, description, items) => {
+const itemButton = document.createElement('button')
+
+    itemButton.addEventListener('click', () => {
+
+
+    })
+
+const newProject = (title, description) => {
     this.title = title;
     this.description = description;
-    this.items = [items];
 
-    return {title, description, items}
+    return {title, description}
 };
 
-const newTodoItem = (title, description, dueDate, priority) => {
+const newTodoItem = (title, description, dueDate, priority, project, completed) => {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
+    this.project = project;
+    this.completed = false;
 
-    return {title, description, dueDate, priority}
+    return {title, description, dueDate, priority, project, completed}
 };
 
-const testItem = newTodoItem('OOP', 'Study OOP and the Odin Project', 'April 15th', 'high priority')
-const testProject = newProject('Finish TOP', 'Finish all of the Odin Project and understand it all', testItem)
+const displayController = (() => {
 
-console.table(testProject);
-displayController.displayProject();
+    const clearDisplay = (aDisplay) => {
+        while (aDisplay.firstChild) {aDisplay.removeChild(aDisplay.lastChild)}
+    };
+
+    const displayProject = (aProject) => {
+        div = document.createElement('div')
+            div.id = `${aProject.title}`;
+            div.classList.add('project');
+            div.innerHTML = `${div.id} - ${aProject.description}`
+            display.append(div)
+    };
+
+    const displayItems = (anItem) =>{
+
+        div = document.createElement('div')
+        div.id = `${anItem.title}`
+        div.classList.add('item')
+        div.innerHTML = `${anItem.title} - ${anItem.description} - ${anItem.dueDate} - ${anItem.priority}`
+
+        const proj = document.getElementById(`${anItem.project}`)
+        
+        proj.append(div);
+
+    };
+
+    const refresh = () =>{ 
+        clearDisplay(display);
+        
+        projects.forEach(element => displayController.displayProject(element));        
+        items.forEach(element => displayController.displayItems(element));
+    }
+
+    return {clearDisplay, displayItems, displayProject, refresh}
+
+})();
+
+
+
+
+
+projects.unshift(newProject('Default Project', 'Project Description'));
+items.unshift(newTodoItem('Item Title', 'Item Description', 'Due Date', 'Priority', 'Default Project', true))
+
+
+displayController.refresh();
 
