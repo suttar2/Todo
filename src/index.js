@@ -9,9 +9,13 @@ template = document.getElementById('template')
 const projButton = document.createElement('button')
 
     projButton.addEventListener('click', () => {
-        projects.push(newProject(prompt("Enter project name"), prompt("Enter project Description")))
+        projects.push(newProject(
+            prompt("Enter project name"), 
+            prompt("Enter project Description")
+            ));
         displayController.refresh();
     })
+    projButton.textContent = "New Project"
 
     template.appendChild(projButton);
 
@@ -19,9 +23,18 @@ const projButton = document.createElement('button')
 const itemButton = document.createElement('button')
 
     itemButton.addEventListener('click', () => {
-
-
+        items.push(newTodoItem(
+            prompt("Item Title"),
+            prompt("Item Description"), 
+            prompt("Due Date"),
+            prompt("Priority"),
+            prompt("project")
+            ));
+        displayController.refresh();
     })
+    itemButton.textContent = "New Item"
+
+    template.appendChild(itemButton);
 
 const newProject = (title, description) => {
     this.title = title;
@@ -71,7 +84,8 @@ const displayController = (() => {
     const refresh = () =>{ 
         clearDisplay(display);
         
-        projects.forEach(element => displayController.displayProject(element));        
+        projects.forEach(element => displayController.displayProject(element));
+             
         items.forEach(element => displayController.displayItems(element));
     }
 
