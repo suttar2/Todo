@@ -102,6 +102,8 @@ const displayController = (() => {
 
     const displayItems = (anItem) =>{
 
+        this.completed ? exit :
+
         div = document.createElement('div')
             div.id = `${anItem.title}`
             div.classList.add('item')
