@@ -2,39 +2,68 @@
 const projects = [];
 const items = [];
 
-display = document.getElementById('content')
-template = document.getElementById('template')
 
 
-const projButton = document.createElement('button')
+const projectForm = (() => {
+    
+    const projectTemplate = document.getElementById('projectTemplate')
 
-    projButton.addEventListener('click', () => {
-        projects.push(newProject(
-            prompt("Enter project name"), 
-            prompt("Enter project Description")
-            ));
-        displayController.refresh();
+    const projectTitle = document.createElement('input');
+        projectTitle.setAttribute('placeholder', 'Project Title')
+        projectTemplate.appendChild(projectTitle);
+
+    const projectDescription = document.createElement('input');
+        projectDescription.setAttribute('placeholder', 'Project Description')
+        projectTemplate.appendChild(projectDescription);
+
+    const projButton = document.createElement('button')
+        projButton.textContent = "Add Project"
+        projectTemplate.appendChild(projButton);
+
+        projButton.addEventListener('click', () => {
+                projects.push(
+                    newProject(projectTitle.value, projectDescription.value));
+            displayController.refresh();
+        })
+        
+})();
+
+const itemForm = (() => {
+    const itemTemplate = document.getElementById('itemTemplate')
+
+    const itemTitle = document.createElement('input')
+        itemTitle.setAttribute('placeholder', 'Item Title')
+        itemTemplate.appendChild(itemTitle);
+        
+    const itemDescription = document.createElement('input');
+        itemDescription.setAttribute('placeholder','Item Description')
+        itemTemplate.appendChild(itemDescription);
+    
+    const dueDate = document.createElement('input');
+        dueDate.setAttribute('placeholder', 'Due Date')
+        itemTemplate.appendChild(dueDate);
+    
+    const priority = document.createElement('input');
+        priority.setAttribute('placeholder','Priority');
+        itemTemplate.appendChild(priority);
+    
+    const project = document.createElement('input');
+        project.setAttribute('placeholder','Project')
+        itemTemplate.appendChild(project);
+
+    const itemButton = document.createElement('button')
+        itemButton.textContent = "Add Item" 
+        itemTemplate.appendChild(itemButton);
+
+            itemButton.addEventListener('click', () => {
+                items.push(
+                    newTodoItem(itemTitle.value, itemDescription.value, dueDate.value, priority.value, project.value)
+                    );
+                displayController.refresh();
     })
-    projButton.textContent = "New Project"
+    
 
-    template.appendChild(projButton);
-
-
-const itemButton = document.createElement('button')
-
-    itemButton.addEventListener('click', () => {
-        items.push(newTodoItem(
-            prompt("Item Title"),
-            prompt("Item Description"), 
-            prompt("Due Date"),
-            prompt("Priority"),
-            prompt("project")
-            ));
-        displayController.refresh();
-    })
-    itemButton.textContent = "New Item"
-
-    template.appendChild(itemButton);
+    })();
 
 const newProject = (title, description) => {
     this.title = title;
@@ -54,14 +83,17 @@ const newTodoItem = (title, description, dueDate, priority, project, completed) 
     return {title, description, dueDate, priority, project, completed}
 };
 
+
 const displayController = (() => {
+
+    const display = document.getElementById('content')
 
     const clearDisplay = (aDisplay) => {
         while (aDisplay.firstChild) {aDisplay.removeChild(aDisplay.lastChild)}
     };
 
     const displayProject = (aProject) => {
-        div = document.createElement('div')
+        div = document.createElement('div');
             div.id = `${aProject.title}`;
             div.classList.add('project');
             div.innerHTML = `${div.id} - ${aProject.description}`
@@ -71,13 +103,11 @@ const displayController = (() => {
     const displayItems = (anItem) =>{
 
         div = document.createElement('div')
-        div.id = `${anItem.title}`
-        div.classList.add('item')
-        div.innerHTML = `${anItem.title} - ${anItem.description} - ${anItem.dueDate} - ${anItem.priority}`
-
-        const proj = document.getElementById(`${anItem.project}`)
-        
-        proj.append(div);
+            div.id = `${anItem.title}`
+            div.classList.add('item')
+            div.innerHTML = `${anItem.title} - ${anItem.description} - ${anItem.dueDate} - ${anItem.priority}`
+                const proj = document.getElementById(`${anItem.project}`)
+                    proj.append(div);
 
     };
 
