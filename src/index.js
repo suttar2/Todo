@@ -102,7 +102,7 @@ const displayController = (() => {
 
     const displayItems = (anItem) =>{
 
-        this.completed ? exit :
+        if (!this.completed){
 
         div = document.createElement('div')
             div.id = `${anItem.title}`
@@ -110,10 +110,12 @@ const displayController = (() => {
             div.innerHTML = `${anItem.title} - ${anItem.description} - ${anItem.dueDate} - ${anItem.priority}`
                 const proj = document.getElementById(`${anItem.project}`)
                     proj.append(div);
+        }
 
     };
 
-    const refresh = () =>{ 
+    const refresh = () => { 
+        
         clearDisplay(display);
         
         projects.forEach(element => displayController.displayProject(element));
